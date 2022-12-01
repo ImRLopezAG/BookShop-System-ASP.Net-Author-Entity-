@@ -2,8 +2,7 @@
 
 namespace BookShopSystem.web.Models {
   public class AuthorModel : BasePersonModel {
-    public string? Biography { get; set; }
-
+    public string Biography { get; set; }
   }
 }
 

@@ -1,7 +1,5 @@
-﻿namespace BookShop.BLL.Core
-{
-  public class ServiceResult
-  {
+﻿namespace BookShop.BLL.Core {
+  public class ServiceResult {
 
     public ServiceResult() => Success = true;
     public bool Success { get; set; }

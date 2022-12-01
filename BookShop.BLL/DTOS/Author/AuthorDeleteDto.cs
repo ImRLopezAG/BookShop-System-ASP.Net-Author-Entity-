@@ -2,5 +2,6 @@
 
 namespace BookShop.BLL.DTOS.Author {
   public class AuthorDeleteDto : PersonBaseDto {
+    public int UserId { get; set; }
   }
 }

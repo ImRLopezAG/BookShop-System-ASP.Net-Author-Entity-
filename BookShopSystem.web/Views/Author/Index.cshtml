@@ -6,54 +6,23 @@
 
 <h1>Authors </h1>
 
-<p>
-  <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        @Html.DisplayNameFor(model => model.Biography)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.FirstName)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.LastName)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.Email)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.Id)
-      </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    @foreach (var item in Model) {
-      <tr>
-        <td>
-          @Html.DisplayFor(modelItem => item.Biography)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-          @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-          @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-          @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+
+<section class="row">
+  @foreach (var item in Model) {
+    <div class="card mb-3 col ms-3" style="min-width: 22rem; max-width: 22rem; ">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="https://t3.ftcdn.net/jpg/00/64/67/80/240_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" class="img-fluid rounded-start imageResponsive pb-2 pt-0" alt="AuthorImage">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">@Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)</h5>
+            <p class="card-text"><small class="text-muted">@Html.DisplayFor(modelItem => item.Email)</small></p>
+            <div class="btn btn-primary float-end mb-2">@Html.ActionLink("Details", "Details", new {  id=item.Id}, new{ style="text-decoration: none; color:white;" })</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</section>
+

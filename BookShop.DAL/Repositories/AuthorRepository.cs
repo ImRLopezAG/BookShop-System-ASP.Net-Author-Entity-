@@ -3,7 +3,6 @@ using BookShop.DAL.Core;
 using BookShop.DAL.Entities;
 using BookShop.DAL.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,29 +14,26 @@ namespace BookShop.DAL.Repositories {
       this.context = context;
       this.logger = logger;
     }
+    public Author GetEntity(int EntityId) => this.context.Authors.Find(EntityId);
 
+    public Author GetById(int EntityId) => this.context.Authors.OrderByDescending(cb => cb.Id).FirstOrDefault();
+
+    IEnumerable<Author> IBaseRepository<Author>.GetAll() => this.context.Authors.OrderByDescending(cb => cb.CreationDate).ToList();
     public void Save(Author entity) {
-      if (this.context.Authors.Any(cb => cb.Id == entity.Id)) {
-        throw new Exceptions.AuthorDataException("El Autor se encuentra Registrado");
-      } else {
-        this.context.Authors.Add(entity);
-      }
+      this.context.Authors.Add(entity);
+      this.context.SaveChanges();
     }
-
     public void Save(Author[] entity) {
-      if (entity.Any())
-        base.Save(entity);
-      else
-        throw new Exceptions.AuthorDataException("Author is null");
-
-      base.Save(entity);
+      this.context.Authors.AddRange(entity);
+      this.context.SaveChanges();
     }
-
     public void Update(Author entity) {
-      throw new NotImplementedException();
+      this.context.Authors.Update(entity);
+      this.context.SaveChanges();
     }
-
-    IEnumerable<Author> IBaseRepository<Author>.GetEntities() => base.GetEntities().Where(cb => !cb.IsDeleted);
+    public void Remove(Author entity) {
+      this.context.Authors.Remove(entity);
+      this.context.SaveChanges();
+    }
   }
 }
-

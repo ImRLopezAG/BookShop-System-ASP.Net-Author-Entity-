@@ -5,7 +5,7 @@ namespace BookShop.DAL.Core {
 
     public BaseEntity() {
       this.CreationDate = DateTime.Now;
-      this.IsDeleted = false;
+      this.IsDeleted = 0;
 
     }
 
@@ -16,7 +16,7 @@ namespace BookShop.DAL.Core {
     public DateTime? ModificationDate { get; set; }
     public int? DeletionUser { get; set; }
     public DateTime? DeletionDate { get; set; }
-    public bool IsDeleted { get; set; }
+    public int IsDeleted { get; set; }
 
   }
 }

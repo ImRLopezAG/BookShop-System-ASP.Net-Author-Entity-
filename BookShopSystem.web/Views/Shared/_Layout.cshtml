@@ -5,7 +5,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - BookShop System</title>
-  <link rel="stylesheet" href="~/css/site.css" />
   <link rel="stylesheet" href="~/css/style.css" />
 </head>
 
@@ -59,7 +58,7 @@
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" asp-controller="Author" asp-action="Edit">Edit</a></li>
+                  <li><a class="dropdown-item" asp-controller="Author" asp-action="EditAuthorList">Edit</a></li>
                 </ul>
               </li>
               <li class="nav-item text-center">
@@ -86,18 +85,17 @@
     </main>
   </div>
 
-  <footer class="border-top footer text-muted mb-2">
-    <div class="container row pt-3 mx-auto">
-      <div class='col-12 gitHub'>
-        <h6 class='text-center'>
-          &copy; 2022 - Made with ❤️ by
-          <a class='text-decoration-none'
-             href='https://github.com/LopezAG17'
-             target='_blank'>
-            <i class='bi bi-github h6'></i>
-          </a>
-        </h6>
-      </div>
+  <footer class='border-top footer text-muted '>
+    <div class='col-12 mt-1'>
+      <h6 class='text-center'>
+        Made with ❤️ by
+        <a class='text-decoration-none'
+           href='https://github.com/LopezAG17'
+           target='_blank'>
+          <i class='bi bi-github gitHub'></i>
+          @@LopezAG17
+        </a>
+      </h6>
     </div>
   </footer>
   <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,59 +1,51 @@
-﻿@model IEnumerable<BookShopSystem.web.Models.AuthorModel>
+﻿@model BookShopSystem.web.Models.AuthorModel
 
 @{
   ViewData["Title"] = "Edit";
 }
 
-<h1>Edit Author</h1>
+<h1>Edit Author : @Model.Id</h1>
 
-<p>
-  <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        @Html.DisplayNameFor(model => model.Biography)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.FirstName)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.LastName)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.Email)
-      </th>
-      <th>
-        @Html.DisplayNameFor(model => model.Id)
-      </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    @foreach (var item in Model) {
-      <tr>
-        <td>
-          @Html.DisplayFor(modelItem => item.Biography)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-          @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-          @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-          @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+<hr />
+<div class="row">
+  <div class="col-md-4">
+    <form asp-action="Edit">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+      </div>
+      <div class="form-group mb-3">
+        <label asp-for="Biography" class="control-label"></label>
+        <input asp-for="Biography" class="form-control" />
+        <span asp-validation-for="Biography" class="text-danger"></span>
+      </div>
+      <div class="form-group float-start">
+        <a class="btn btn-primary" asp-action="EditAuthorList">Back to List</a>
+      </div>
+      <div class="form-group float-end">
+        <input type="submit" value="Save" class="btn btn-primary" />
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
+
+@section Scripts {
+  @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+  }
+  }

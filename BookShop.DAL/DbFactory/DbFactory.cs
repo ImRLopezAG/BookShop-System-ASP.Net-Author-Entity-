@@ -9,7 +9,7 @@ namespace BookShop.DAL.DbFactory {
 
     public DbFactory(DbContext dbContext) => _dbContext = dbContext;
 
-    public DbContext GetDbContext => throw new NotImplementedException();
+    public DbContext GetDbContext => this._dbContext;
 
     public void Dispose() {
       this.Dispose(true);

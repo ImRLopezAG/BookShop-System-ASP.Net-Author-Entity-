@@ -41,19 +41,16 @@ namespace BookShop.BLL.Services {
     public ServiceResult DeleteAuthor(AuthorDeleteDto deleteAuthor) {
       ServiceResult result = new ServiceResult();
       try {
-        var query = from author in authorRepository.GetEntities()
-                    where author.Id == deleteAuthor.Id
-                    select author;
-        var authorToDelete = query.FirstOrDefault();
-        if (authorToDelete == null) {
-          result.Message = "No se encontró el autor";
-          return result;
+        Author authorToRemove = authorRepository.GetById(deleteAuthor.Id);
+        if (authorToRemove == null) {
+          result.Success = false;
+          result.Message = "Author not found";
         } else {
-          authorRepository.Remove(authorToDelete);
+          authorRepository.Remove(authorToRemove);
           result.Success = true;
-          result.Message = "Autor eliminado correctamente";
+          result.Message = "Author removed successfully";
         }
-        authorRepository.Remove(authorToDelete);
+
       } catch (Exception ex) {
         result.Message = "Error deleting author";
         loggerService.LogError(result.Message, ex);
@@ -64,14 +61,16 @@ namespace BookShop.BLL.Services {
     public ServiceResult GetAll() {
       ServiceResult result = new ServiceResult();
       try {
-        var query = (from author in authorRepository.GetEntities()
-                     select new AuthorModel {
-                       Id = author.Id,
-                       FirstName = author.FirstName,
-                       LastName = author.LastName,
-                       Biography = author.Biography,
-                     }).ToList();
-        result.Data = query;
+        var query = from author in authorRepository.GetAll()
+                    select new AuthorModel() {
+                      Id = author.Id,
+                      FirstName = author.FirstName,
+                      LastName = author.LastName,
+                      Biography = author.Biography,
+                      Email = author.Email,
+                    };
+        result.Data = query.ToList();
+
       } catch (Exception ex) {
         result.Success = false;
         result.Message = ex.Message;
@@ -82,15 +81,20 @@ namespace BookShop.BLL.Services {
     public ServiceResult GetById(int Id) {
       ServiceResult result = new ServiceResult();
       try {
-        var query = (from author in authorRepository.GetEntities()
-                     where author.Id == Id
-                     select new AuthorModel {
-                       Id = author.Id,
-                       FirstName = author.FirstName,
-                       LastName = author.LastName,
-                       Biography = author.Biography,
-                     }).FirstOrDefault();
-        result.Data = query;
+        Author author = authorRepository.GetEntity(Id);
+        if (author == null) {
+          result.Message = "No se encontró el autor";
+          return result;
+        } else {
+          result.Data = new AuthorModel() {
+            Id = author.Id,
+            FirstName = author.FirstName,
+            LastName = author.LastName,
+            Biography = author.Biography,
+            Email = author.Email,
+          };
+        }
+
       } catch (Exception ex) {
         result.Success = false;
         result.Message = ex.Message;
@@ -108,11 +112,14 @@ namespace BookShop.BLL.Services {
             result.Message = "El autor ya existe";
             return result;
           }
-          Author author = new Author {
+          Author authortoAdd = new Author {
             FirstName = saveAuthor.FirstName,
             LastName = saveAuthor.LastName,
+            Email = saveAuthor.Email,
             Biography = saveAuthor.Biography,
           };
+          authorRepository.Save(authortoAdd);
+          result.Message = ("El Autor se agrego correctamente");
         } else {
           result.Success = false;
           result.Message = resultIsValid.Message;
@@ -129,24 +136,30 @@ namespace BookShop.BLL.Services {
     public AuthorUpdateResponse Update(AuthorUpdateDto updateAuthor) {
       AuthorUpdateResponse result = new AuthorUpdateResponse();
       try {
-        var query = from author in authorRepository.GetEntities()
-                    where author.Id == updateAuthor.Id
-                    select author;
-        var authorToUpdate = query.FirstOrDefault();
-        if (authorToUpdate == null) {
-          result.Message = "No se encontró el autor";
-          return result;
+        var resultIsValid = Validations.ValidatePerson.IsValidPerson(updateAuthor);
+        if (resultIsValid.Success) {
+          Author authorToUpdate = authorRepository.GetEntity(updateAuthor.Id);
+          if (authorToUpdate == null) {
+            result.Message = "No se encontró el autor";
+            return result;
+          } else {
+            authorToUpdate.FirstName = updateAuthor.FirstName;
+            authorToUpdate.LastName = updateAuthor.LastName;
+            authorToUpdate.Email = updateAuthor.Email;
+            authorToUpdate.Biography = updateAuthor.Biography;
+            authorToUpdate.ModificationDate = DateTime.Now;
+            authorRepository.Update(authorToUpdate);
+            result.Message = "El autor se actualizó correctamente";
+          }
         } else {
-          authorToUpdate.FirstName = updateAuthor.FirstName;
-          authorToUpdate.LastName = updateAuthor.LastName;
-          authorToUpdate.Biography = updateAuthor.Biography;
-          authorRepository.Update(authorToUpdate);
-          result.Success = true;
-          result.Message = "Autor actualizado correctamente";
+          result.Success = false;
+          result.Message = resultIsValid.Message;
+          return result;
         }
       } catch (Exception ex) {
-        result.Message = "Error updating author";
-        loggerService.LogError(result.Message, ex);
+        result.Message = $"Error al actualizar el autor: {ex.Message}";
+        this.loggerService.LogError(result.Message, ex.ToString());
+        return result;
       }
       return result;
     }
