@@ -86,7 +86,6 @@ namespace BookShopSystem.web.Controllers
           LastName = collection["LastName"],
           Email = collection["Email"],
           Biography = collection["Biography"],
-
         };
         _authorService.Update(updateAuthorDto);
         return RedirectToAction(nameof(Index));
